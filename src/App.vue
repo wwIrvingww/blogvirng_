@@ -1,30 +1,35 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <div class="sitio-web">
+      <div class="paginas">
+        <TopBar :onRouteChange="handleRouteChange" />
+        <Router :ruta="rutaActual" :navigate="handleRouteChange" />
+      </div>
+    </div>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
+<script setup>
+import { ref, onMounted } from 'vue'
+import { LoginProvider } from './Hooks/useLogin'
+import Router from './components/Router/Router.vue'
+import TopBar from './components/TopBar/TopBar.vue'
+
+const rutaActual = ref(window.location.pathname)
+
+const handleRouteChange = (route) => {
+  rutaActual.value = route
+  window.history.pushState({}, '', route)
+}
+
+onMounted(() => {
+  console.log('Se ha montado el componente')
+  console.log('RUTA ACTUAL: ', window.location.pathname)
+  rutaActual.value = window.location.pathname
+  console.log(window.location)
+})
+</script>
+
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+/* Estilos específicos de este componente */
 </style>
